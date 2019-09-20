@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>样本3 - Redis安装方式 - Essay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+<meta name="description" content="Summerlius's Notes">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+
+</head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                <img src="/images/logo.png" alt="" height="28">
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                
+                
+                    
+                    
+                    <a class="navbar-item" href="#安装建议">1&nbsp;&nbsp;<b>安装建议</b></a>
+                
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#官网源码安装">2&nbsp;&nbsp;<b>官网源码安装</b></a>
+                
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#apt-get方式安装">3&nbsp;&nbsp;<b>apt-get方式安装</b></a>
+                
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#docker安装">4&nbsp;&nbsp;<b>docker安装</b></a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope="" itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            样本3 - Redis安装方式
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2018-11-17T15:00:00.000Z" itemprop="datePublished">11月 17 2018</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/样本/">样本</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            5 分钟 读完 (约 799 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="安装建议"><a href="#安装建议" class="headerlink" title="安装建议"></a>安装建议</h2><ol>
+<li>建议通过源码安装或Docker容器安装。<ul>
+<li>两者都可以安装最新Redis版本</li>
+<li>两者都可以很容易的在本机安装多个Redis服务，尤其是源码安装中提供的<code>install_server.sh</code>工具</li>
+</ul>
+</li>
+<li>官方没有提供apt-get源安装，第三方的apt源安装，Redis版本都不高</li>
+</ol>
+<a id="more"></a>
+<h2 id="官网源码安装"><a href="#官网源码安装" class="headerlink" title="官网源码安装"></a>官网源码安装</h2><ul>
+<li><a href="https://redis.io/download" target="_blank" rel="noopener">官网下载地址</a></li>
+<li><p>安装流程：</p>
+<ol>
+<li><p>首先下载并解压到服务器上，并进入解压目录，执行make命令</p>
+ <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.0.tar.gz</span><br><span class="line">tar xzf redis-5.0.0.tar.gz</span><br><span class="line"><span class="hljs-built_in">cd</span> redis-5.0.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>make命令gcc源码编译后，会在 redis-5.0.0/src/ 目录下生成6个可执行文件，分别如下</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis-benchmark*</span><br><span class="line">redis-check-aof*</span><br><span class="line">redis-check-rdb*</span><br><span class="line">redis-cli*</span><br><span class="line">redis-sentinel*</span><br><span class="line">redis-server*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将上述编译生成的可执行文件，拷贝到 <code>/usr/bin/</code> 目录下</p>
+</li>
+<li>接下来就是配置和启动服务：在解压后的目录 <code>redis-5.0.0/utils/</code> 下，官方就提供了一些工具文件，其中 <code>redis-5.0.0/utils/install_server.sh</code> 脚本提供了服务的配置与运行的自动化处理，很方便，这就是我们要使用的脚本文件。</li>
+<li>执行<code>install_server.sh</code>文件，其运行是交互式的，依次让我们确定以下几项：<ul>
+<li>端口：默认 6379</li>
+<li>配置文件：默认 /etc/redis/6379.conf</li>
+<li>日志文件：默认 /var/log/redis_6379.log</li>
+<li>数据目录：默认 /var/lib/redis/6379/</li>
+<li>可执行文件：默认 /var/bin/redis-server（该文件需要我们事先拷贝到该目录）</li>
+</ul>
+</li>
+<li><code>install_server.sh</code> 执行完后，会生成上述确定的文件，并运行redis服务<ul>
+<li>生成 /etc/init.d/redis_6379* 文件，可以作为系统服务</li>
+<li>生成 /etc/redis/6379.conf 配置文件</li>
+<li>生成 /var/log/redis_6379.log 日志文件</li>
+<li>生成 /var/lib/redis/6379/ 数据目录</li>
+</ul>
+</li>
+<li>至此端口6379的redis服务成功运行</li>
+<li><strong>安装多个redis服务</strong>：从上面流程我们可以看到，通过 <code>install_server.sh</code> 脚本，我们可以很轻松的在本机安装多个redis服务，只需要指定不同的端口即可，其生产的配置、日志、数据等文件都是以端口号隔开，不会交错。</li>
+</ol>
+</li>
+</ul>
+<h2 id="apt-get方式安装"><a href="#apt-get方式安装" class="headerlink" title="apt-get方式安装"></a>apt-get方式安装</h2><ul>
+<li>apt-get install redis-server</li>
+<li><p>但是一般apt源redis-server的版本较低，所以需要配置其它源（其实其它源也不高，五十步笑百步）</p>
+<ol>
+<li><p>ubuntu</p>
+<ul>
+<li><a href="https://launchpad.net/" target="_blank" rel="noopener">ppa</a>  <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-get install software-properties-common python-software-properties</span><br><span class="line">add-apt-repository ppa:chris-lea/redis-server</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>debian</p>
+<ul>
+<li><p><a href="https://www.dotdeb.org/" target="_blank" rel="noopener">Dotdeb</a></p>
+  <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 添加一个dotdeb.list的apit源文件</span></span><br><span class="line">/etc/apt/sources.list.d/dotdeb.list</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 原地址</span></span><br><span class="line">deb http://packages.dotdeb.org jessie all</span><br><span class="line">deb-src http://packages.dotdeb.org jessie all</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 国内镜像地址</span></span><br><span class="line">deb http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line">deb-src http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wget https://www.dotdeb.org/dotdeb.gpg</span><br><span class="line">apt-key add dotdeb.gpg</span><br><span class="line"></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>参考：</p>
+<ul>
+<li><a href="https://www.linode.com/docs/databases/redis/how-to-install-a-redis-server-on-ubuntu-or-debian8/" target="_blank" rel="noopener">https://www.linode.com/docs/databases/redis/how-to-install-a-redis-server-on-ubuntu-or-debian8/</a></li>
+<li><a href="https://www.hugeserver.com/kb/install-redis-debian-ubuntu/" target="_blank" rel="noopener">https://www.hugeserver.com/kb/install-redis-debian-ubuntu/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h2><ul>
+<li><a href="https://hub.docker.com/_/redis/" target="_blank" rel="noopener">官方redis</a></li>
+<li><a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=redis&amp;starCount=0" target="_blank" rel="noopener">搜索列表</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/样本/">#样本</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2018/11/18/样本4/">样本4 - 代码示例</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2018/11/16/样本2/">样本2 - 《药》 - 鲁迅</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Summerlius&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+
+<script src="/js/script.js"></script>
+
+    
+</body>
+</html>
