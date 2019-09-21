@@ -1,126 +1,389 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-<head><meta name="generator" content="Hexo 3.8.0">
-    <meta charset="utf-8">
-<title>样本3 - Redis安装方式 - Essay</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-<meta name="description" content="Summerlius's Notes">
 
 
 
 
 
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","width":300,"offset":12,"onmobile":true},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="安装建议 建议通过源码安装或Docker容器安装。 两者都可以安装最新Redis版本 两者都可以很容易的在本机安装多个Redis服务，尤其是源码安装中提供的install_server.sh工具   官方没有提供apt-get源安装，第三方的apt源安装，Redis版本都不高">
+<meta name="keywords" content="样本3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="样本3 - Redis安装方式">
+<meta property="og:url" content="https://summerlius.top/2018/11/17/样本3/index.html">
+<meta property="og:site_name" content="title">
+<meta property="og:description" content="安装建议 建议通过源码安装或Docker容器安装。 两者都可以安装最新Redis版本 两者都可以很容易的在本机安装多个Redis服务，尤其是源码安装中提供的install_server.sh工具   官方没有提供apt-get源安装，第三方的apt源安装，Redis版本都不高">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-09-21T07:28:20.337Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="样本3 - Redis安装方式">
+<meta name="twitter:description" content="安装建议 建议通过源码安装或Docker容器安装。 两者都可以安装最新Redis版本 两者都可以很容易的在本机安装多个Redis服务，尤其是源码安装中提供的install_server.sh工具   官方没有提供apt-get源安装，第三方的apt源安装，Redis版本都不高">
+  <link rel="canonical" href="https://summerlius.top/2018/11/17/样本3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>样本3 - Redis安装方式 | title</title>
+  
 
 
 
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
 
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="/css/style.css">
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                <img src="/images/logo.png" alt="" height="28">
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                
-                
-                    
-                    
-                    <a class="navbar-item" href="#安装建议">1&nbsp;&nbsp;<b>安装建议</b></a>
-                
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#官网源码安装">2&nbsp;&nbsp;<b>官网源码安装</b></a>
-                
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#apt-get方式安装">3&nbsp;&nbsp;<b>apt-get方式安装</b></a>
-                
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#docker安装">4&nbsp;&nbsp;<b>docker安装</b></a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
-    </div>
-</nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope="" itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            样本3 - Redis安装方式
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            <time datetime="2018-11-17T15:00:00.000Z" itemprop="datePublished">11月 17 2018</time>
-        </span>
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/样本/">样本</a>
-        </span>
-        
-        
-        <span class="column is-narrow">
-            
-            
-            5 分钟 读完 (约 799 字)
-        </span>
-        
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">title</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+        <p class="site-subtitle">subtitle</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
     
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives<span class="badge">4</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories<span class="badge">4</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags<span class="badge">4</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-search">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/search" rel="section"><i class="menu-item-icon fa fa-fw fa-search"></i> <br>Search</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://summerlius.top/2018/11/17/样本3/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Summerlius">
+      <meta itemprop="description" content="description">
+      <meta itemprop="image" content="/images/apple-touch-icon-next.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="title">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">样本3 - Redis安装方式
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-11-17 23:00:00" itemprop="dateCreated datePublished" datetime="2018-11-17T23:00:00+08:00">2018-11-17</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-21 15:28:20" itemprop="dateModified" datetime="2019-09-21T15:28:20+08:00">2019-09-21</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/样本3/" itemprop="url" rel="index"><span itemprop="name">样本3</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/11/17/样本3/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/17/样本3/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
         <h2 id="安装建议"><a href="#安装建议" class="headerlink" title="安装建议"></a>安装建议</h2><ol>
 <li>建议通过源码安装或Docker容器安装。<ul>
 <li>两者都可以安装最新Redis版本</li>
@@ -135,10 +398,10 @@
 <li><p>安装流程：</p>
 <ol>
 <li><p>首先下载并解压到服务器上，并进入解压目录，执行make命令</p>
- <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.0.tar.gz</span><br><span class="line">tar xzf redis-5.0.0.tar.gz</span><br><span class="line"><span class="hljs-built_in">cd</span> redis-5.0.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.0.tar.gz</span><br><span class="line">tar xzf redis-5.0.0.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>make命令gcc源码编译后，会在 redis-5.0.0/src/ 目录下生成6个可执行文件，分别如下</p>
- <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis-benchmark*</span><br><span class="line">redis-check-aof*</span><br><span class="line">redis-check-rdb*</span><br><span class="line">redis-cli*</span><br><span class="line">redis-sentinel*</span><br><span class="line">redis-server*</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis-benchmark*</span><br><span class="line">redis-check-aof*</span><br><span class="line">redis-check-rdb*</span><br><span class="line">redis-cli*</span><br><span class="line">redis-sentinel*</span><br><span class="line">redis-server*</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>将上述编译生成的可执行文件，拷贝到 <code>/usr/bin/</code> 目录下</p>
 </li>
@@ -169,14 +432,14 @@
 <ol>
 <li><p>ubuntu</p>
 <ul>
-<li><a href="https://launchpad.net/" target="_blank" rel="noopener">ppa</a>  <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-get install software-properties-common python-software-properties</span><br><span class="line">add-apt-repository ppa:chris-lea/redis-server</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
+<li><a href="https://launchpad.net/" target="_blank" rel="noopener">ppa</a>  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-get install software-properties-common python-software-properties</span><br><span class="line">add-apt-repository ppa:chris-lea/redis-server</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li><p>debian</p>
 <ul>
 <li><p><a href="https://www.dotdeb.org/" target="_blank" rel="noopener">Dotdeb</a></p>
-  <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 添加一个dotdeb.list的apit源文件</span></span><br><span class="line">/etc/apt/sources.list.d/dotdeb.list</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 原地址</span></span><br><span class="line">deb http://packages.dotdeb.org jessie all</span><br><span class="line">deb-src http://packages.dotdeb.org jessie all</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 国内镜像地址</span></span><br><span class="line">deb http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line">deb-src http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wget https://www.dotdeb.org/dotdeb.gpg</span><br><span class="line">apt-key add dotdeb.gpg</span><br><span class="line"></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加一个dotdeb.list的apit源文件</span></span><br><span class="line">/etc/apt/sources.list.d/dotdeb.list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 原地址</span></span><br><span class="line">deb http://packages.dotdeb.org jessie all</span><br><span class="line">deb-src http://packages.dotdeb.org jessie all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 国内镜像地址</span></span><br><span class="line">deb http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line">deb-src http://mirror.xtom.com.hk/dotdeb/ jessie all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wget https://www.dotdeb.org/dotdeb.gpg</span><br><span class="line">apt-key add dotdeb.gpg</span><br><span class="line"></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install redis-server</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>参考：</p>
 <ul>
@@ -194,82 +457,337 @@
 <li><a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=redis&amp;starCount=0" target="_blank" rel="noopener">搜索列表</a></li>
 </ul>
 
-    
     </div>
-    
-    <div class="columns is-variable is-1 is-multiline is-mobile">
-    
-        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/样本/">#样本</a></span>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2018/11/18/样本4/">样本4 - 代码示例</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2018/11/16/样本2/">样本2 - 《药》 - 鲁迅</a>
-            
-        </span>
-    </div>
-    
-</article>
 
+    
+    
+    
+        
+      
 
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/样本3/" rel="tag"># 样本3</a>
+            
+          </div>
+        
 
+        
 
-    </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2019 Summerlius&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/11/16/样本2/" rel="next" title="样本2 - 《药》 - 鲁迅">
+                  <i class="fa fa-chevron-left"></i> 样本2 - 《药》 - 鲁迅
+                </a>
+              
             </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            
-        </div>
-    </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+            <span class="post-nav-divider"></span>
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
-
-<script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
-    }
-    moment.locale("zh-CN");
-</script>
-
-
-
-<script src="/js/script.js"></script>
-
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/11/18/样本4/" rel="prev" title="样本4 - 代码示例">
+                  样本4 - 代码示例 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
     
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装建议"><span class="nav-number">1.</span> <span class="nav-text">安装建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#官网源码安装"><span class="nav-number">2.</span> <span class="nav-text">官网源码安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apt-get方式安装"><span class="nav-number">3.</span> <span class="nav-text">apt-get方式安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker安装"><span class="nav-number">4.</span> <span class="nav-text">docker安装</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/apple-touch-icon-next.png" alt="Summerlius">
+  <p class="site-author-name" itemprop="name">Summerlius</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/theme-next" title="GitHub &rarr; https://github.com/theme-next" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:support@theme-next.org" title="E-Mail &rarr; mailto:support@theme-next.org" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://gitter.im/theme-next" title="Gitter &rarr; https://gitter.im/theme-next" rel="noopener" target="_blank"><i class="fa fa-fw fa-github-alt"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://riot.im/app/#/room/#NexT:matrix.org" title="Riot &rarr; https://riot.im/app/#/room/#NexT:matrix.org" rel="noopener" target="_blank"><i class="fa fa-fw fa-bullhorn"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://t.me/joinchat/GUNHXA-vZkgSMuimL1VmMw" title="Telegram [Chat] &rarr; https://t.me/joinchat/GUNHXA-vZkgSMuimL1VmMw" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://t.me/theme_next" title="Telegram [News] &rarr; https://t.me/theme_next" rel="noopener" target="_blank"><i class="fa fa-fw fa-paper-plane"></i></a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Summerlius</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://summerlius.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://summerlius.top/2018/11/17/样本3/";
+    this.page.identifier = "2018/11/17/样本3/";
+    this.page.title = '样本3 - Redis安装方式';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://summerlius.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
 </body>
 </html>
