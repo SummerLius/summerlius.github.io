@@ -4,7 +4,7 @@
 
 
 
-<html lang="zh-cn">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -19,6 +19,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -32,7 +33,7 @@
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -43,24 +44,26 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
     },
     sidebarPadding: 40
   };
 </script>
 
-  <meta name="keywords" content="样本1">
+  <meta name="description" content="blah blah blahblah blah blah blah blah blah                Content (md partial supported)                          Content (md partial supported)                          Content (md partial supporte">
+<meta name="keywords" content="样本1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="样本1">
 <meta property="og:url" content="https://summerlius.top/2018/11/16/样本1/index.html">
 <meta property="og:site_name" content="title">
-<meta property="og:locale" content="zh-cn">
+<meta property="og:description" content="blah blah blahblah blah blah blah blah blah                Content (md partial supported)                          Content (md partial supported)                          Content (md partial supporte">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
@@ -68,9 +71,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
-<meta property="og:updated_time" content="2019-09-21T06:57:18.725Z">
+<meta property="og:updated_time" content="2019-09-21T11:23:24.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="样本1">
+<meta name="twitter:description" content="blah blah blahblah blah blah blah blah blah                Content (md partial supported)                          Content (md partial supported)                          Content (md partial supporte">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg">
   <link rel="canonical" href="https://summerlius.top/2018/11/16/样本1/">
 
@@ -122,7 +126,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
   <div class="container use-motion">
     <div class="headband"></div>
 
@@ -142,7 +146,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -171,7 +175,7 @@
       
     
 
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
 
   </li>
       
@@ -193,7 +197,7 @@
       
     
 
-    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives<span class="badge">4</span></a>
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">4</span></a>
 
   </li>
       
@@ -215,7 +219,7 @@
       
     
 
-    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories<span class="badge">4</span></a>
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">5</span></a>
 
   </li>
       
@@ -237,7 +241,7 @@
       
     
 
-    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags<span class="badge">4</span></a>
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">5</span></a>
 
   </li>
       
@@ -257,32 +261,37 @@
       
     
 
-    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
 
   </li>
-      
-      
-      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
         
-        <li class="menu-item menu-item-search">
-      
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
     
-      
-      
-        
-      
-        
-      
-        
-      
-    
-
-    <a href="/search" rel="section"><i class="menu-item-icon fa fa-fw fa-search"></i> <br>Search</a>
-
-  </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -329,13 +338,13 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
               
                 
               
 
-              <time title="Created: 2018-11-16 22:00:00" itemprop="dateCreated datePublished" datetime="2018-11-16T22:00:00+08:00">2018-11-16</time>
+              <time title="创建时间：2018-11-16 22:00:00" itemprop="dateCreated datePublished" datetime="2018-11-16T22:00:00+08:00">2018-11-16</time>
             </span>
           
             
@@ -345,8 +354,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-09-21 14:57:18" itemprop="dateModified" datetime="2019-09-21T14:57:18+08:00">2019-09-21</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-21 19:23:24" itemprop="dateModified" datetime="2019-09-21T19:23:24+08:00">2019-09-21</time>
               </span>
             
           
@@ -354,7 +363,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/样本1/" itemprop="url" rel="index"><span itemprop="name">样本1</span></a></span>
 
@@ -373,7 +382,7 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus: </span>
+      <span class="post-meta-item-text">Disqus：</span>
     
     <a title="disqus" href="/2018/11/16/样本1/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/16/样本1/" itemprop="commentCount"></span></a>
   </span>
@@ -390,6 +399,27 @@
 
       
         <p><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="title_logo"></p>
+<p><blockquote class="blockquote-center">blah blah blah</blockquote><br><!-- 标签 方式，要求版本在0.4.5或以上 --><br><blockquote class="blockquote-center"><p>blah blah blah</p>
+</blockquote><br><!-- 标签别名 --><br><blockquote class="blockquote-center"><p>blah blah blah </p>
+</blockquote></p>
+<div class="note default">
+            <p>Content (md partial supported) </p>
+          </div>
+<div class="note primary">
+            <p>Content (md partial supported) </p>
+          </div>
+<div class="note success">
+            <p>Content (md partial supported) </p>
+          </div>
+<div class="note info">
+            <p>Content (md partial supported) </p>
+          </div>
+<div class="note warning">
+            <p>Content (md partial supported) </p>
+          </div>
+<div class="note danger">
+            <p>Content (md partial supported) </p>
+          </div>
 <div class="justified-gallery"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Elephant"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Dog"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Birds"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Cat"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Fox"><br><img src="https://raw.githubusercontent.com/SummerLius/note/master/assets/1.jpg" alt="Horse"><br></div>
 
 
@@ -401,6 +431,22 @@
     
     
         
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Summerlius</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://summerlius.top/2018/11/16/样本1/" title="样本1">https://summerlius.top/2018/11/16/样本1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
       
 
       <footer class="post-footer">
@@ -476,10 +522,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -500,7 +546,7 @@
           <a href="/archives">
         
           <span class="site-state-item-count">4</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
     
@@ -512,8 +558,8 @@
             <a href="/categories">
           
         
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">categories</span>
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
         </a>
       </div>
     
@@ -525,8 +571,8 @@
             <a href="/tags">
           
         
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">tags</span>
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
         </a>
       </div>
     
@@ -538,7 +584,7 @@
       
         
       
-        <a href="https://github.com/theme-next" title="GitHub &rarr; https://github.com/theme-next" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+        <a href="https://summerlius.top" title="GitHub &rarr; https://summerlius.top"><i class="fa fa-fw fa-github"></i></a>
       </span>
     
       <span class="links-of-author-item">
@@ -547,7 +593,7 @@
       
         
       
-        <a href="mailto:support@theme-next.org" title="E-Mail &rarr; mailto:support@theme-next.org" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+        <a href="mailto:summerlius.top" title="E-Mail &rarr; mailto:summerlius.top"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
     
       <span class="links-of-author-item">
@@ -556,7 +602,7 @@
       
         
       
-        <a href="https://gitter.im/theme-next" title="Gitter &rarr; https://gitter.im/theme-next" rel="noopener" target="_blank"><i class="fa fa-fw fa-github-alt"></i></a>
+        <a href="https://summerlius.top" title="Gitter &rarr; https://summerlius.top"><i class="fa fa-fw fa-github-alt"></i></a>
       </span>
     
       <span class="links-of-author-item">
@@ -565,7 +611,7 @@
       
         
       
-        <a href="https://riot.im/app/#/room/#NexT:matrix.org" title="Riot &rarr; https://riot.im/app/#/room/#NexT:matrix.org" rel="noopener" target="_blank"><i class="fa fa-fw fa-bullhorn"></i></a>
+        <a href="https://summerlius.top" title="Riot &rarr; https://summerlius.top"><i class="fa fa-fw fa-bullhorn"></i></a>
       </span>
     
       <span class="links-of-author-item">
@@ -574,7 +620,7 @@
       
         
       
-        <a href="https://t.me/joinchat/GUNHXA-vZkgSMuimL1VmMw" title="Telegram [Chat] &rarr; https://t.me/joinchat/GUNHXA-vZkgSMuimL1VmMw" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i></a>
+        <a href="https://summerlius.top" title="Telegram [Chat] &rarr; https://summerlius.top"><i class="fa fa-fw fa-telegram"></i></a>
       </span>
     
       <span class="links-of-author-item">
@@ -583,7 +629,7 @@
       
         
       
-        <a href="https://t.me/theme_next" title="Telegram [News] &rarr; https://t.me/theme_next" rel="noopener" target="_blank"><i class="fa fa-fw fa-paper-plane"></i></a>
+        <a href="https://summerlius.top" title="Telegram [News] &rarr; https://summerlius.top"><i class="fa fa-fw fa-paper-plane"></i></a>
       </span>
     
   </div>
@@ -608,9 +654,9 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Summerlius</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
 
         
 
@@ -636,6 +682,8 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
 <script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
 <script src="/js/schemes/pisces.js?v=7.4.0"></script>
 <script src="/js/next-boot.js?v=7.4.0"></script>
@@ -650,6 +698,8 @@
 
 
 
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
 
 
 
